@@ -15,7 +15,7 @@ void broadcast(const string& msg)
     msgs.push_back(msg);
     crow::json::wvalue x;
     x["msgs"][0] = msgs.back();
-    x["last"] = msgs.size();
+    x["last"] = (uint64_t) msgs.size();
     string body = crow::json::dump(x);
     for(auto p:ress)
     {
@@ -44,7 +44,7 @@ int main()
         int start = max(0, (int)msgs.size()-100);
         for(int i = start; i < (int)msgs.size(); i++)
             x["msgs"][i-start] = msgs[i];
-        x["last"] = msgs.size();
+        x["last"] = (uint64_t) msgs.size();
         CROW_LOG_INFO << "logs completed";
         return x;
     });
@@ -57,7 +57,7 @@ int main()
             crow::json::wvalue x;
             for(int i = after; i < (int)msgs.size(); i ++)
                 x["msgs"][i-after] = msgs[i];
-            x["last"] = msgs.size();
+            x["last"] = (uint64_t) msgs.size();
 
             res.write(crow::json::dump(x));
             res.end();
